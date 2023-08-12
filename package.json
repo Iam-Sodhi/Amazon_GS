@@ -70,5 +70,5 @@
     "eslint": "^8.47.0",
     "eslint-config-google": "^0.14.0"
   },
-  "proxy": "http://localhost:3009"
+  "proxy": "https://amazon-gs.onrender.com"
 }
