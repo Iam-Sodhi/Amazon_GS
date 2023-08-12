@@ -31,7 +31,7 @@ function Payment() {
         const subtotal = findSubtotal(basket);
         const amountInSubunits = Math.max(Math.round(subtotal * 100), 100); // Ensure at least 100 subunits (1 unit)
     
-        const { data } = await axios.post("/create-payment-intent", {
+        const { data } = await axios.post("https://amazon-gs.onrender.com/create-payment-intent", {
           amount: amountInSubunits,
       currency: "INR",
         });
