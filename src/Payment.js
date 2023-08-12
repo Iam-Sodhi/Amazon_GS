@@ -72,7 +72,7 @@ function Payment() {
           setError(null);
           setProcessing(false);
           dispatch({
-            type: "EMTPY_CART",
+            type: "EMPTY_CART",
           });
           navigate("/orders");
         } else {
