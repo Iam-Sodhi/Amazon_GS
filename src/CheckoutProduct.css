@@ -6,11 +6,17 @@
     padding-left: 20px;
 }
 .checkoutProduct-info > button {
-    background: #f0c14b;
+    background: #ffcd4e;
     border: 1px solid;
     margin-top: 10px;
     border-color: #a88734 #9c7e31 #846a29;
     color: #111;
+}
+.checkoutProduct-info >button:hover {background-color: #e6a400}
+
+.checkoutProduct-info >button:active {
+  background-color: #a07300;
+  transform: translateY(4px);
 }
 .checkoutProduct-image {
     object-fit: contain;

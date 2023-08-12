@@ -14,7 +14,7 @@ function Login() {
   const signIn = (e) => {
     e.preventDefault(); //to prevent refreshing
 
-    signInWithEmailAndPassword(auth, email, password)
+    signInWithEmailAndPassword(auth, email,password)
       .then((userCredential) => {
         // Signed in
          if (userCredential) { //if not empty

@@ -11,6 +11,9 @@
     max-height: 500px;
     min-width: 100px;
 }
+.product:hover {
+    transform: translate3D(0,-1px,0) scale(1.03);
+  }
 .product >img{
     max-height: 200px;
     width: 80%;
@@ -32,8 +35,14 @@
     background: #ffcd4e;
     border: 1px solid;
     margin-top: 10px;
-    border-color: #e6a400;
+    border-color: #a88734 #9c7e31 #846a29;
     color: #111;
+}
+.product>button:hover {background-color: #e6a400}
+
+.product>button:active {
+  background-color: #a07300;
+  transform: translateY(4px);
 }
 .product-rating{
     display: flex;

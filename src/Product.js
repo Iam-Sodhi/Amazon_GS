@@ -2,20 +2,28 @@ import React from "react";
 import "./Product.css";
 import { useStateValue } from "./StateProvider";
 
-function Product({id,title, image, price, rating }) {
-  const [{basket},dispath] = useStateValue();
+function Product({ id, title, image, price, rating }) {
+  const [{ basket }, dispath] = useStateValue();
   const addToCart = () => {
     //dispath the item into the data layer
-    dispath({
-      type: "ADD_TO_CART",
-      item: {
-        id: id,
-        title: title,
-        image: image,
-        price: price,
-        rating: rating,
-      },
+    let present = false;
+    basket.forEach((item) => {
+      if (item.id === id) {
+        present = true;
+      }
     });
+    if (!present) {
+      dispath({
+        type: "ADD_TO_CART",
+        item: {
+          id: id,
+          title: title,
+          image: image,
+          price: price,
+          rating: rating,
+        },
+      });
+    }
   };
   return (
     <div className="product">
@@ -34,7 +42,7 @@ function Product({id,title, image, price, rating }) {
         </div>
       </div>
       <img src={image} alt="cardphoto" />
-      <button onClick={addToCart}>Add to Cart </button>
+      <button id="addToCart_Button" onClick={addToCart}>Add to Cart</button>
     </div>
   );
 }
