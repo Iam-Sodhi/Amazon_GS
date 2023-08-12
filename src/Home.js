@@ -71,6 +71,47 @@ function Home() {
         />
         </div>
         <div className="home-row">
+          <Product
+            id="13"
+            title="Samsung 80 cm (32 Inches) Wondertainment Series HD Ready LED Smart TV UA32T4340BKXXL (Glossy Black)"
+            price={12990.00}
+            rating={4}
+            image="https://m.media-amazon.com/images/I/71a4ZQNqTiL._AC_UY327_FMwebp_QL65_.jpg"
+          />
+          <Product
+            id="14"
+            title="Samsung 108 cm (43 inches) Crystal iSmart 4K Ultra HD Smart LED TV UA43CUE60AKLXL (Black)"
+            price={29990.00}
+            rating={5}
+            image="https://m.media-amazon.com/images/I/81+JXgPUDLL._AC_UY327_FMwebp_QL65_.jpg"
+          />
+        </div>
+        <div className="home-row">
+          <Product
+            id="16"
+            title="Samsung LC49RG90SSUXEN 49' Curved LED Gaming Monitor - Super Ultra Wide Dual WQHD 5120 x 1440"
+            price={1094.98}
+            rating={4}
+            image="https://images-na.ssl-images-amazon.com/images/I/6125mFrzr6L._AC_SX355_.jpg"
+          />
+        </div>
+        <div className="home-row">
+          <Product
+            id="15"
+            title="SAF Multieffect UV Textured Panel Painting (Set of 3, 12 Inches X 27 Inches (SANFC12242) SANFC12242"
+            price={1690.00}
+            rating={4}
+            image="https://m.media-amazon.com/images/I/41YdZvuWRgL._SY300_SX300_QL70_FMwebp_.jpg"
+          />
+          <Product
+            id="16"
+            title="VISUALSKETCHES Horse Paintin for Wall 20x47 Inch Running Horses Painting Modern Canvas Painting Wall Painting"
+            price={9990.00}
+            rating={5}
+            image="https://m.media-amazon.com/images/I/51+1Cshj-3L._SX679_.jpg"
+          />
+        </div>
+        <div className="home-row">
         <Product 
           id="9"
         title="BENGOO G9000 Stereo Gaming Headset "
@@ -100,7 +141,6 @@ function Home() {
         rating={5}
         />
         </div>
-
       </div>
     </div>
   )

@@ -8,7 +8,8 @@ import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import CurrencyFormat from "react-currency-format";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import {db} from "./firebase";
+import { db } from "./firebase";
+import { doc, setDoc } from "firebase/firestore"; 
 
 function Payment() {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ function Payment() {
   const elements = useElements();
   const [error, setError] = useState(null);
   const [disabled, setDisabled] = useState(true);
-  const [clientSecret, setClientSecret] = useState(true);
+  const [clientSecret, setClientSecret] = useState("");
   const [succeeded, setSucceeded] = useState(false);
   const [processing, setProcessing] = useState("");
 
@@ -25,50 +26,68 @@ function Payment() {
     //generate the special stripe secret which allows us to charge the customer
     //but whenever the basket changes we need to get a new secret
 
-  //   const getClientSecret = async () => {
-  //     const response = await axios({
-  //         method: 'post',
-  //         // Stripe expects the total in a currencies subunits
-  //         url: `/clone-cbf82/us-central1/api/payments/create?total=${findSubtotal(basket) * 100}`,
+    const getClientSecret = async () => {
+      try {
+        const subtotal = findSubtotal(basket);
+        const amountInSubunits = Math.max(Math.round(subtotal * 100), 100); // Ensure at least 100 subunits (1 unit)
+    
+        const { data } = await axios.post("/create-payment-intent", {
+          amount: amountInSubunits,
+      currency: "INR",
+        });
+        setClientSecret(data.clientSecret);
+      } catch (error) {
+        console.error("Error fetching client secret:", error);
+      }
+    };
+    getClientSecret();
+  }, [basket]);
 
-  //     });
-  //     setClientSecret(response.data.clientSecret)
-  // }
-
-  // getClientSecret();
-}, [basket])
-  
   console.log("The secret is now =>", clientSecret);
+  console.log("The user is : ",user);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setProcessing(true);
+    try {
+      const { paymentIntent, error } = await stripe.confirmCardPayment(
+        clientSecret,
+        {
+          payment_method: {
+            card: elements.getElement(CardElement),
+          },
+        }
+      );
 
-    const payload = await stripe
-      .confirmCardPayment(clientSecret, {
-        payment_method: {
-          card: elements.getElement(CardElement),
-        },
-      })
-      .then(({ paymentIntent }) => {
-        //paymentIntent =payment confirmation
-
-        db.collection('users').doc(user?.id).collection('orders').doc(paymentIntent.id)
-        .set({
-          basket: basket,
-          amount: paymentIntent.amount,
-          created: paymentIntent.created
-        })
-        setSucceeded(true);
-        setError(null);
-        setProcessing(false);
-        dispatch({
-          type: 'EMTPY_CART'
-        })
-
-        navigate("/orders");
-      });
+     if (paymentIntent) {
+        // Payment confirmation is received
+        if (paymentIntent.status === "succeeded") {
+          // Handle successful payment
+          await setDoc(doc(db, "users", user?.uid, "orders", paymentIntent.id), {
+            basket: basket,
+            amount: paymentIntent.amount,
+            created: paymentIntent.created,
+          });
+          setSucceeded(true);
+          setError(null);
+          setProcessing(false);
+          dispatch({
+            type: "EMTPY_CART",
+          });
+          navigate("/orders");
+        } else {
+          // Handle failed payment
+          setError("Payment was not successful. Please try again.");
+          setProcessing(false);
+        }
+      }
+    } catch (error) {
+      console.error("Error confirming card payment:", error);
+      setError("An error occurred while processing your payment.");
+      setProcessing(false);
+    }
   };
+
   const handleChange = (e) => {
     //listen for changes in the cardElement and display any errors as the customer types card details
     setDisabled(e.empty);

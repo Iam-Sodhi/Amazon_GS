@@ -38,11 +38,12 @@ function Header() {
             <span className="header-optionLine2">{user ? "Sign Out" : "Sign In"}</span>
           </div>
         </Link>
-
+       <Link to="/orders">
         <div className="header-option">
           <span className="header-optionLine1">Returns</span>
           <span className="header-optionLine2">& Orders</span>
         </div>
+       </Link>
         <Link to="/checkout">
           <div className="header-optionCart">
             <AddShoppingCartIcon fontSize="large" />

@@ -16,7 +16,7 @@ const reducer = (state, action) => {
         case "EMPTY_CART":
           return{
             ...state,
-            basket:[]
+            basket:[],
           }
       case "REMOVE_FROM_CART":
         // const index=state.basket.findIndex(
