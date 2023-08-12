@@ -8,6 +8,7 @@ import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import CurrencyFormat from "react-currency-format";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import {db} from "./firebase";
 
 function Payment() {
   const navigate = useNavigate();
@@ -24,17 +25,17 @@ function Payment() {
     //generate the special stripe secret which allows us to charge the customer
     //but whenever the basket changes we need to get a new secret
 
-    const getClientSecret = async () => {
-      const response = await axios({
-          method: 'post',
-          // Stripe expects the total in a currencies subunits
-          url: `/clone-cbf82/us-central1/api/payments/create?total=${findSubtotal(basket) * 100}`,
+  //   const getClientSecret = async () => {
+  //     const response = await axios({
+  //         method: 'post',
+  //         // Stripe expects the total in a currencies subunits
+  //         url: `/clone-cbf82/us-central1/api/payments/create?total=${findSubtotal(basket) * 100}`,
 
-      });
-      setClientSecret(response.data.clientSecret)
-  }
+  //     });
+  //     setClientSecret(response.data.clientSecret)
+  // }
 
-  getClientSecret();
+  // getClientSecret();
 }, [basket])
   
   console.log("The secret is now =>", clientSecret);
@@ -51,6 +52,13 @@ function Payment() {
       })
       .then(({ paymentIntent }) => {
         //paymentIntent =payment confirmation
+
+        db.collection('users').doc(user?.id).collection('orders').doc(paymentIntent.id)
+        .set({
+          basket: basket,
+          amount: paymentIntent.amount,
+          created: paymentIntent.created
+        })
         setSucceeded(true);
         setError(null);
         setProcessing(false);

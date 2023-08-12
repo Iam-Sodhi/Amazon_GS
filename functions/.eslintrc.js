@@ -7,12 +7,13 @@ module.exports = {
     "ecmaVersion": 2018,
   },
   extends: [
-    "eslint:recommended",
     "google",
+    // "eslint:recommended",
   ],
   rules: {
     "no-restricted-globals": ["error", "name", "length"],
     "prefer-arrow-callback": "error",
+    "max-len": ["error", {"code": 150}],
     "quotes": ["error", "double", {"allowTemplateLiterals": true}],
   },
   overrides: [

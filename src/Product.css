@@ -47,3 +47,9 @@
 .product-rating{
     display: flex;
 }
+.payment-priceContainer{
+    margin: 5px 0;
+}
+.payment-priceContainer>button{
+    margin: 5px 0;
+}
