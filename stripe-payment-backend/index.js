@@ -1,19 +1,24 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-
+const cors = require('cors');
 const app = express();
 
 const stripe = require('stripe')('sk_test_51NdCXmSFEEyTQkqeoUppjTeUN5fSKfLg5716KkRvPeqMg5xPnTmBrG8anpcXKgPLEioOEjMiOTcdNbUYiqGHB56E00ud23GG2m'); // Replace with your Stripe secret key
 const port = process.env.PORT || 3009;
 app.use(bodyParser.json());
+app.use(cors())
 
-app.use(express.static('../public'));
-// let the react app to handle any unknown routes 
-// serve up the index.html if express does'nt recognize the route
-const path = require('path');
+const path = require('path')
+const buildPath = path.join(__dirname, 'build')
+app.use(express.static(buildPath))
+app.use(express.json())
+app.use(cors())
+
+
+// gets the static files from the build folder
 app.get('*', (req, res) => {
-res.sendFile(path.resolve(__dirname, '../public/index.html'));
-});
+  res.sendFile(path.join(buildPath, 'index.html'))
+})
 
 // Define your API routes
 app.post('/create-payment-intent', async (req, res) => {
